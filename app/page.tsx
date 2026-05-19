@@ -5,6 +5,7 @@ import { useState } from "react";
 interface Note {
   id: Number;
   text: String;
+  isDone: Boolean
 }
 
 export default function Home()
