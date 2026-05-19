@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import type { Note } from "@/types";
+import { useNotes } from "@/hooks/useNotes";
 
 export default function NoteDetailPage()
 {
     const params = useParams<{id: string}>();
     const router = useRouter();
     const noteId = params.id;
-    const [notes, setNotes, isLoaded] = useLocalStorage<Note[]>("notes", []);
-    const [noteText, setNoteText] = useState<string>("");
+
+    const {notes, isLoading, updateNoteText} = useNotes();
+    const [noteText, setNoteText] = useState("");
     const note = notes.find((n) => n.id === noteId);
 
     useEffect(() => {
@@ -20,13 +20,9 @@ export default function NoteDetailPage()
         }
     }, [note]);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!note || noteText.trim() === "") return;
-
-        const updatedNotes = notes.map((n) => 
-            n.id === noteId ? {...n, text: noteText} : n
-        );
-        setNotes(updatedNotes);
+        await updateNoteText(noteId, noteText);
         router.push("/");
     };
 
@@ -34,7 +30,7 @@ export default function NoteDetailPage()
         router.push("/");
     };
 
-    if (!isLoaded) {
+    if (isLoading) {
         return (
         <main className="max-w-xl mx-auto mt-10 p-4">
             <p>Memuat...</p>
@@ -57,29 +53,29 @@ export default function NoteDetailPage()
     }
 
     return(
-         <main className="max-w-xl mx-auto mt-10 p-4">
-      <h1 className="text-2xl font-bold mb-4">Edit Catatan</h1>
-      <textarea
+        <main className="max-w-xl mx-auto mt-10 p-4">
+        <h1 className="text-2xl font-bold mb-4">Edit Catatan</h1>
+        <textarea
         value={noteText}
         onChange={(e) => setNoteText(e.target.value)}
         className="w-full border px-3 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
         rows={4}
-      />
-      <div className="flex gap-2">
+        />
+        <div className="flex gap-2">
         <button
-          onClick={handleSave}
-          disabled={noteText.trim() === ""}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={handleSave}
+        disabled={noteText.trim() === ""}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Simpan
+        Simpan
         </button>
         <button
-          onClick={handleCancel}
-          className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+        onClick={handleCancel}
+        className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
         >
-          Batal
+        Batal
         </button>
-      </div>
+        </div>
     </main>
     );
 }
