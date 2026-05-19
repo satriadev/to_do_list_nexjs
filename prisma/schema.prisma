@@ -17,5 +17,5 @@ modal Note {
   text      string
   isDone    boolean   @default(false)
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt()
+  updatedAt DateTime  @updatedAt
 }
