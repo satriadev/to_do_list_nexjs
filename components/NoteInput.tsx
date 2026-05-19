@@ -8,8 +8,7 @@ interface NoteInputProps {
 
 export default function NoteInput({inputText, setInputText, addNote}: NoteInputProps)
 {
-    return
-    (
+    return (
         <div className="flex gap-2 mb-6">
             <input 
             onChange={(e) => setInputText(e.target.value)}
