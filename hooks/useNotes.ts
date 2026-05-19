@@ -70,7 +70,7 @@ export function useNotes()
         }
     };
 
-    const deletedCompleted = async() => {
+    const deleteCompleted = async() => {
         const completedId = notes.filter((n) => n.isDone).map((n) => n.id);
         await Promise.all(completedId.map((id) => deleteNote(id)));
     };
@@ -83,7 +83,7 @@ export function useNotes()
         deleteNote,
         toggleNote,
         updateNoteText,
-        deletedCompleted,
+        deleteCompleted,
         refresh: fetchNotes,
     };
 }
