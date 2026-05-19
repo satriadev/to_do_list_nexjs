@@ -4,18 +4,18 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
-modal Note {
-  id        string    @id @default(uuid())
-  text      string
-  isDone    boolean   @default(false)
+model Note {
+  id        String    @id @default(uuid())
+  text      String
+  isDone    Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
