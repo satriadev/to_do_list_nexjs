@@ -15,7 +15,7 @@ export default function Home()
   const addNote = () => {
     if (inputText.trim() === "") return;
     const newNote: Note = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       text: inputText,
       isDone: false,
     };
@@ -23,11 +23,11 @@ export default function Home()
     setInputText("");
   };
 
-  const delNote = (id: number) => {
+  const delNote = (id: string) => {
     setNotes(notes.filter((note) => note.id !== id));
   };
 
-  const toggleNote = (id: number) => {
+  const toggleNote = (id: string) => {
     setNotes(
       notes.map(
         (note) => note.id === id? {...note, isDone: !note.isDone} : note

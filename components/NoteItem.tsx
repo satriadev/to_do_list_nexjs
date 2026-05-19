@@ -2,12 +2,12 @@
 
 interface NoteItemProps {
     note: {
-        id: number;
+        id: string;
         text: string;
         isDone: boolean;
     };
-    onToggle: (id: number) => void;
-    onDelete: (id: number) => void;
+    onToggle: (id: string) => void;
+    onDelete: (id: string) => void;
 }
 
 export default function NoteItem({note, onToggle, onDelete}: NoteItemProps)

@@ -5,8 +5,8 @@ import type { Note } from "@/types";
 
 interface NoteListProps {
     notes: Note[];
-    onToggle: (id: number) => void;
-    onDelete: (id: number) => void;
+    onToggle: (id: string) => void;
+    onDelete: (id: string) => void;
 }
 
 export default function NoteList({notes, onToggle, onDelete}: NoteListProps)
