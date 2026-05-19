@@ -1,4 +1,4 @@
-interface Note {
+export interface Note {
   id: number;
   text: string;
   isDone: boolean;

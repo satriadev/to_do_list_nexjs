@@ -4,11 +4,7 @@ import NoteItem from "./NoteItem";
 import type { Note } from "@/types";
 
 interface NoteListProps {
-    notes: {
-        id: number;
-        text: string;
-        isDone: boolean
-    }[];
+    notes: Note[];
     onToggle: (id: number) => void;
     onDelete: (id: number) => void;
 }
