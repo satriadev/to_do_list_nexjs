@@ -4,24 +4,31 @@ import { useState, useEffect } from "react";
 
 export function useLocalStorage<T>(key: string, initialValue: T)
 {
-    const [storedValue, setStoredValue] = useState<T>(()=>{
-        if (typeof window === "undefined") return initialValue;
-        try {
-            const item = window.localStorage.getItem(key);
-            return item ? (JSON.parse(item) as T) : initialValue;
-        } catch (error) {
-            console.error(`Error reading localStorage key "${key}":`, error);
-            return initialValue;
-        }
-    });
+    const [storedValue, setStoredValue] = useState<T>(initialValue);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
             try {
+                const item = window.localStorage.getItem(key);
+                if (item) {
+                    setStoredValue(JSON.parse(item) as T);
+                }
+            } catch (error) {
+                console.error(`Error reading localStorage key "${key}"`, error);
+            }
+            setIsLoaded(true);
+        }, [key],
+    );
+
+    useEffect(() => {
+        if (isLoaded) {
+            try {
                 window.localStorage.setItem(key, JSON.stringify(storedValue));
             } catch (error) {
-                console.error( `Error setting localStorage key "${key}":`, error);
+                console.error(`Error setting localStorage key "${key}":`, error);
             }
-        }, [key, storedValue],);
+        }
+    }, [key, storedValue, isLoaded]);
 
-    return [storedValue, setStoredValue] as const;
+    return [storedValue, setStoredValue, isLoaded] as const;
 }
