@@ -8,7 +8,7 @@ import type { Note } from "@/types";
 
 export default function Home()
 {
-  const [notes, setNotes] = useLocalStorage<Note[]>("notes", []);
+  const [notes, setNotes, isLoaded] = useLocalStorage<Note[]>("notes", []);
   const [inputText, setInputText] = useState<string>("");
 
 
@@ -50,6 +50,14 @@ export default function Home()
     if (window.confirm(`Yakin menghapus semua?`)){
       setNotes([]);
     }
+  }
+
+  if(!isLoaded) {
+    return(
+      <main className="max-w-xl mx-auto mt-10 p-4">
+        <p>Memuat catatan...</p>
+      </main>
+    );
   }
 
   return (
