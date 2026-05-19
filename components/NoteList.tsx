@@ -1,6 +1,7 @@
 "use Client";
 
 import NoteItem from "./NoteItem";
+import type { Note } from "@/types";
 
 interface NoteListProps {
     notes: {

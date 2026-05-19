@@ -3,17 +3,14 @@
 import { useState } from "react";
 import NoteInput from "@/components/NoteInput";
 import NoteList from "@/components/NoteList";
-
-interface Note {
-  id: number;
-  text: string;
-  isDone: boolean;
-}
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import type { Note } from "@/types";
 
 export default function Home()
 {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useLocalStorage<Note[]>("notes", []);
   const [inputText, setInputText] = useState<string>("");
+
 
   const addNote = () => {
     if (inputText.trim() === "") return;
@@ -38,6 +35,22 @@ export default function Home()
     );
   };
 
+  const delCompleted = () => {
+    if (notes.some((note) => note.isDone)) {
+      if (window.confirm("Hapus semua yang sudah selesai?")){
+        setNotes(notes.filter((note) => !note.isDone));
+      }
+    }
+  };
+
+  const completedNotes = notes.filter((note) => note.isDone).length;
+  const totalNotes = notes.length;
+
+  const resetNotes = () => {
+    if (window.confirm(`Yakin menghapus semua?`)){
+      setNotes([]);
+    }
+  }
 
   return (
   <main className="max-w-xl mx-auto mt-10 p-4">
@@ -47,6 +60,27 @@ export default function Home()
       setInputText={setInputText}
       addNote={addNote}
     />
+    <button
+      onClick={resetNotes}
+    >
+      Delete All
+    </button>
+     {totalNotes > 0 && (
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-sm text-gray-600">
+            {completedNotes} dari {totalNotes} selesai
+          </p>
+          {completedNotes > 0 && (
+            <button
+              onClick={delCompleted}
+              className="text-sm text-red-600 hover:text-red-800 transition"
+            >
+              Hapus yang selesai
+            </button>
+          )}
+        </div>
+      )}
+
     <NoteList
       notes={notes}
       onToggle={toggleNote}
