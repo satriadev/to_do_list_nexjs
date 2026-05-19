@@ -1,5 +1,7 @@
 "useClient";
 
+import Link from "next/link";
+
 interface NoteItemProps {
     note: {
         id: string;
@@ -23,6 +25,15 @@ export default function NoteItem({note, onToggle, onDelete}: NoteItemProps)
             <span className={`flex-1 ${note.isDone ? "line-through text-gray-400" : ""}`}>
                 {note.text}
             </span>
+            
+            <Link
+            href={`/notes/${note.id}`}
+            className="text-blue-500 hover:text-blue-700 transition mr-2"
+            title="Edit catatan"
+            >
+                ✏️
+            </Link>
+            
             <button
             onClick={() => onDelete(note.id)}
             className="text-red-500 hover:text-red-700 transition"
