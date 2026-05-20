@@ -13,7 +13,7 @@ export async function GET(
     }
     return NextResponse.json(note);
   } catch (error) {
-    console.error("GET /api/notes/[id] error:", error); // ⬅️ tambahkan
+    console.error("GET /api/notes/[id] error:", error);
     return NextResponse.json({ error: "Gagal mengambil catatan" }, { status: 500 });
   }
 }
